@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VILA CANOPUS DIGITAL</title>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+body{margin:0;font-family:Arial;background:#0a1f0a;color:white;text-align:center;padding-bottom:20px}
+.top{background:linear-gradient(#1e6e1e,#0d3d0d);padding:20px;border-bottom:4px solid #3a9a3a}
+.top h2{margin:0;font-size:22px;color:#c8ffcc}
+.card{background:#123212;padding:20px;border-radius:15px;margin:15px;border:2px solid #2e7d32}
+.saldo{font-size:55px;color:#8aff8a;font-weight:bold}
+.btn{display:block;background:linear-gradient(#2e7d32,#1b5e20);color:white;padding:18px;border-radius:12px;font-weight:bold;margin:12px 15px;border:2px solid #4caf50;width:calc(100% - 30px);font-size:17px;cursor:pointer;text-decoration:none}
+.btn-blue{background:linear-gradient(#009ee3,#007eb5);border-color:#00b0ff}
+.qrbox{background:white;padding:15px;border-radius:12px;margin:15px;display:none;color:black}
+.aviso{background:#0f2f0f;border:2px solid #2e7d32;padding:15px;border-radius:10px;font-size:12px;margin:15px;color:#b6ffb6;line-height:1.6}
+#reader{width:90%;max-width:400px;margin:15px auto;display:none;border:3px solid #2e7d32;border-radius:10px;overflow:hidden}
+</style>
+</head>
+<body>
+<div class="top"><h2>🌿 VILA CANOPUS DIGITAL 🌿</h2><small>DINHEIRO COMUNITARIO ZC$ - SAO FELIX DO XINGU - PA</small></div>
+<div class="card"><div>SEU SALDO NA VILA CANOPUS</div><div class="saldo" id="saldo">0 ZC$</div><div style="font-size:12px;color:#8aff8a">Titular: Delmirene Gomes da Silva</div></div>
+<button class="btn" onclick="comprar()">💰 COMPRAR ZC$ - VILA CANOPUS DIGITAL</button>
+<a class="btn btn-blue" href="https://link.mercadopago.com.br/dolarcanopus" target="_blank">🔗 LINK DE PAGAMENTO OFICIAL</a>
+<button class="btn" onclick="abrirReceber()">📥 GERAR QR CODE PARA RECEBER</button>
+<button class="btn" onclick="abrirPagar()">📷 PAGAR COM QR CODE</button>
+<div id="reader"></div>
+<div id="boxReceber" class="qrbox">
+<b>VILA CANOPUS DIGITAL - RECEBER</b><br><br>
+<input id="valorR" type="number" placeholder="Digite valor ex: 20" style="padding:12px;width:80%;font-size:16px;border-radius:8px;border:2px solid green"><br><br>
+<button onclick="gerarQR()" style="padding:12px;background:green;color:white;border-radius:8px;font-weight:bold">GERAR QR CODE</button>
+<div id="qrArea" style="margin-top:15px"></div>
+<div id="pixTxt" style="word-break:break-all;font-size:11px;background:#eee;padding:10px;border-radius:8px;margin-top:10px;display:none"></div>
+<br><b>Delmirene Gomes da Silva</b><br>PIX: 00305690280<br>Vila Canopus - Sao Felix do Xingu
+</div>
+<div class="aviso">
+<b>🌱 VILA CANOPUS DIGITAL 🌱</b><br><br>
+<b>Comunidade:</b> Vila Canopus Digital<br>
+<b>Moeda:</b> ZC$ - Zenexarion Canopus<br>
+<b>Titular:</b> Delmirene Gomes da Silva<br>
+<b>Assinatura:</b> Assinatura Delmirene<br>
+<b>PIX:</b> 00305690280<br>
+<b>Link:</b> https://link.mercadopago.com.br/dolarcanopus<br>
+<b>Whats:</b> 94 98141-9719<br>
+<b>Cidade:</b> Sao Felix do Xingu - Para<br>
+<b>Site:</b> https://delmirenegomesdasilva27-maker.github.io/vila-canopus-digital/<br><br>
+VALIDO SOMENTE NA VILA CANOPUS DIGITAL - 1 ZC$ = R$ 1,00
+</div>
+<script>
+let saldo=+(localStorage.saldoVila||0);
+function up(){document.getElementById('saldo').innerText=saldo+' ZC$';localStorage.saldoVila=saldo}up();
+function comprar(){
+ let v=prompt('VILA CANOPUS DIGITAL\nQuanto ZC$ comprar? Titular: Delmirene Gomes da Silva\nEx: 20');
+ if(!v) return; v=Number(v); if(v<=0) return;
+ window.open('https://link.mercadopago.com.br/dolarcanopus','_blank');
+ setTimeout(()=>{if(confirm('Delmirene, voce pagou R$ '+v+' no link https://link.mercadopago.com.br/dolarcanopus ? OK libera ZC$')){saldo+=v;up();alert('✅ '+v+' ZC$ liberado! Vila Canopus Digital');}},2000);
+}
+function abrirReceber(){document.getElementById('boxReceber').style.display='block';document.getElementById('reader').style.display='none';}
+function gerarQR(){
+ let v=document.getElementById('valorR').value; if(!v) return alert('Digite valor!');
+ let payload='00020126580014BR.GOV.BCB.PIX0114003056902805204000053039865406'+parseFloat(v).toFixed(2)+'5802BR5913DELMIRENE GOMES6008SAO FELIX62070503***6304';
+ document.getElementById('qrArea').innerHTML='<img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='+encodeURIComponent(payload)+'" style="width:250px;border:4px solid green;border-radius:10px"><br><b>'+v+' ZC$ - Vila Canopus Digital</b>';
+ let t=document.getElementById('pixTxt'); t.style.display='block'; t.innerText=payload+'\n\nDelmirene Gomes da Silva - PIX 00305690280 - R$ '+v+'\nLink: https://link.mercadopago.com.br/dolarcanopus';
+}
+let qr;
+function abrirPagar(){
+ document.getElementById('reader').style.display='block';
+ document.getElementById('boxReceber').style.display='none';
+ qr=new Html5Qrcode('reader');
+ qr.start({facingMode:'environment'},{fps:10,qrbox:250},(d)=>{
+  qr.stop();document.getElementById('reader').style.display='none';
+  let v=prompt('QR lido - Vila Canopus - Quanto pagar?'); if(v){v=Number(v); if(v>0&&v<=saldo){saldo-=v;up();alert('✅ Pagou '+v+' ZC$');}else alert('Saldo insuficiente: '+saldo);}
+ },()=>{});
+}
+</script>
+</body>
+</html>
